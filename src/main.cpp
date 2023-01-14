@@ -3,11 +3,11 @@
 #include "esp32-hal-ledc.h"
 
 void setup() {
-  ledcSetup(1, 50, 8); // channel 1, 50 Hz, 16-bit width
-  ledcAttachPin(enA, 1); //GPIO 22 assigned to channel 1
+  ledcSetup(enA, 50, 8); // channel 1, 50 Hz, 16-bit width
+  ledcAttachPin(enApin, enA); //GPIO 2 assigned to channel 1
   
-  ledcSetup(2, 50, 8); // channel 1, 50 Hz, 16-bit width
-  ledcAttachPin(enB, 2); //GPIO 22 assigned to channel 1
+  ledcSetup(enB, 50, 8); // channel 2, 50 Hz, 16-bit width
+  ledcAttachPin(enBpin, enB); //GPIO 4 assigned to channel 2
 
   gpio_set_direction(in1, GPIO_MODE_OUTPUT);
   gpio_set_direction(in2, GPIO_MODE_OUTPUT);

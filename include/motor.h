@@ -1,7 +1,9 @@
 #include <Arduino.h>
 
-#define enA 2
-#define enB 4
+#define enA 1 //channel 1
+#define enB 2 //channel 2
+#define enApin 2
+#define enBpin 4
 #define in1 GPIO_NUM_13
 #define in2 GPIO_NUM_12
 #define in3 GPIO_NUM_13

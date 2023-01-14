@@ -8,15 +8,19 @@
 
 #include "motor.h"
 #include "hcsr04.h"
+#include "servo.h"
 
 BluetoothSerial SerialBT;
 
 void setup() {
-  ledcSetup(enA, 500, 8); // channel 1, 50 Hz, 16-bit width
+  ledcSetup(enA, 500, 8); // channel 1, 500 Hz, 8-bit width
   ledcAttachPin(enApin, enA); //GPIO 2 assigned to channel 1
   
-  ledcSetup(enB, 500, 8); // channel 2, 50 Hz, 16-bit width
+  ledcSetup(enB, 500, 8); // channel 2, 500 Hz, 8-bit width
   ledcAttachPin(enBpin, enB); //GPIO 4 assigned to channel 2
+
+  ledcSetup(servoChannel, 500, 8); // channel 3, 500 Hz, 8-bit width
+  ledcAttachPin(servoPin, servoChannel); //GPIO 5 assigned to channel 3
 
   gpio_set_direction(in1, GPIO_MODE_OUTPUT);
   gpio_set_direction(in2, GPIO_MODE_OUTPUT);
@@ -36,22 +40,23 @@ void loop() {
     // if (Serial.available()) {
     //   SerialBT.write(Serial.read());
     // }
+
     if (SerialBT.available()) {
       String dir = SerialBT.readStringUntil('s');
       Serial.println(dir);
-      // Serial.println(SerialBT.readString());
-      // switch (dir[0]){
-      //   case 'u':
-      //     move_forward(128);
-      //   case 'd':
-      //     move_backward(128);
-      //   case 'l':
-      //     turn_left(2000);
-      //   case 'r':
-      //     turn_right(2000);
-      //   case 'x':
-      //     motor_reset();
-      // }
+    //   // Serial.println(SerialBT.readString());
+    //   // switch (dir[0]){
+    //   //   case 'u':
+    //   //     move_forward(128);
+    //   //   case 'd':
+    //   //     move_backward(128);
+    //   //   case 'l':
+    //   //     turn_left(2000);
+    //   //   case 'r':
+    //   //     turn_right(2000);
+    //   //   case 'x':
+    //   //     motor_reset();
+    //   // }
       if (dir == "u"){
         move_forward(128);
       }
@@ -59,10 +64,10 @@ void loop() {
         move_backward(128);
       }
       if (dir == "r"){
-        turn_right(2000);
+        turn_right(1000);
       }
       if (dir == "l"){
-        turn_left(2000);
+        turn_left(1000);
       }
       if (dir == "x"){
         motor_reset();

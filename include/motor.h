@@ -17,11 +17,11 @@ enum class Motor
 
 enum class Direction
 {
-    forward = 0,
-    backward = 1,
     cw = 2,
     ccw = 3
 };
+
+int angle_to_time(int angle);
 
 //set single motor direction and speed
 void motor_set(Motor motor, Direction dir, int speed);

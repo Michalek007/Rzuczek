@@ -5,6 +5,9 @@
 #include "esp32-hal-ledc.h"
 #include "BluetoothSerial.h"
 
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
@@ -15,6 +18,7 @@
 
 BluetoothSerial SerialBT;
 Adafruit_BMP280 bmp; // I2C
+Adafruit_SSD1306 display(-1);
 
 void setup() {
   ledcSetup(enA, 500, 8); // channel 1, 500 Hz, 8-bit width
@@ -59,9 +63,29 @@ void setup() {
                   Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
                   Adafruit_BMP280::FILTER_X16,      /* Filtering. */
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
+  
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  // Clear the buffer.
+  display.clearDisplay();
 }
 
 void loop() {
+    //ustawiamy rozmiar czcionki, kolor, położenie kursora orazwyświetlany tekst
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.setCursor(5, 10);
+    display.println("DUPA");
+    display.display();
+    display.clearDisplay();
+    delay(2000);
+
+    display.clearDisplay(); 
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.setCursor(0,28);
+    display.println("Hello world!");
+    display.display();
+
     Serial.print(F("Temperature = "));
     Serial.print(bmp.readTemperature());
     Serial.println(" *C");
@@ -76,6 +100,8 @@ void loop() {
 
     Serial.println();
     delay(2000);
+
+
     // if (Serial.available()) {
     //   SerialBT.write(Serial.read());
     // }

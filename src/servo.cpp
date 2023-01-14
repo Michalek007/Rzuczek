@@ -2,7 +2,9 @@
 
 
 void set_servo_position(int degree){
-    ledcWrite(servoChannel, (degree*256)/180);
+    for (int i = 0; i < degree;i+=5){
+        ledcWrite(servoChannel, i);
+    }
 }
 
 void reset_servo_position(){

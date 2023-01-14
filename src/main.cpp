@@ -12,13 +12,21 @@
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
+#include <Adafruit_Sensor.h>
+#include <Adafruit_ADXL345_U.h>
+
 #include "motor.h"
 #include "hcsr04.h"
 #include "servo.h"
 
+#define waterPin GPIO_NUM_5
+
+/* Assign a unique ID to this sensor at the same time */
+Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 BluetoothSerial SerialBT;
 Adafruit_BMP280 bmp; // I2C
 Adafruit_SSD1306 display(-1);
+sensors_event_t event; 
 
 void setup() {
   ledcSetup(enA, 500, 8); // channel 1, 500 Hz, 8-bit width
@@ -38,10 +46,13 @@ void setup() {
   gpio_set_direction(trigger_pin, GPIO_MODE_OUTPUT);
   gpio_set_direction(echo_pin, GPIO_MODE_INPUT);
 
+  gpio_set_direction(waterPin, GPIO_MODE_INPUT);
+
   Serial.begin(921600);
   SerialBT.begin("rzuczek"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
 
+  // BMP280 setup
   while ( !Serial ) delay(100);   // wait for native usb
   Serial.println(F("BMP280 test"));
   unsigned status;
@@ -54,7 +65,6 @@ void setup() {
     Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
     Serial.print("        ID of 0x60 represents a BME 280.\n");
     Serial.print("        ID of 0x61 represents a BME 680.\n");
-    while (1) delay(10);
   }
 
   /* Default settings from datasheet. */
@@ -70,74 +80,79 @@ void setup() {
 }
 
 void loop() {
-    //ustawiamy rozmiar czcionki, kolor, położenie kursora orazwyświetlany tekst
-    display.setTextSize(1);
-    display.setTextColor(WHITE);
-    display.setCursor(5, 10);
-    display.println("DUPA");
-    display.display();
-    display.clearDisplay();
-    delay(2000);
 
-    display.clearDisplay(); 
-    display.setTextSize(1);
-    display.setTextColor(WHITE);
-    display.setCursor(0,28);
-    display.println("Hello world!");
-    display.display();
+  /* Get a new sensor event */
+  // accel.getEvent(&event);
 
-    Serial.print(F("Temperature = "));
-    Serial.print(bmp.readTemperature());
-    Serial.println(" *C");
+  // /* Display the results (acceleration is measured in m/s^2) */
+  // Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
+  // Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
+  // Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
+  // delay(500);
+  // ustawiamy rozmiar czcionki, kolor, położenie kursora orazwyświetlany tekst
+  // display.setTextSize(1);
+  // display.setTextColor(WHITE);
+  // display.setCursor(5, 10);
+  // display.println("DUPA");
+  // display.display();
+  // display.clearDisplay();
+  // delay(2000);
 
-    Serial.print(F("Pressure = "));
-    Serial.print(bmp.readPressure());
-    Serial.println(" Pa");
+  // display.clearDisplay();
+  // display.setTextSize(1);
+  // display.setTextColor(WHITE);
+  // display.setCursor(0,28);
+  // display.println("Hello world!");
+  // display.display();
 
-    Serial.print(F("Approx altitude = "));
-    Serial.print(bmp.readAltitude(1013.25)); /* Adjusted to local forecast! */
-    Serial.println(" m");
+  Serial.print(F("Temperature = "));
+  Serial.print(bmp.readTemperature());
+  Serial.println(" *C");
 
-    Serial.println();
-    delay(2000);
+  Serial.print(F("Pressure = "));
+  Serial.print(bmp.readPressure());
+  Serial.println(" Pa");
 
+  Serial.print(F("Approx altitude = "));
+  Serial.print(bmp.readAltitude(1013.25)); /* Adjusted to local forecast! */
+  Serial.println(" m");
 
-    // if (Serial.available()) {
-    //   SerialBT.write(Serial.read());
-    // }
+  delay(50);
 
-    if (SerialBT.available()) {
-      String dir = SerialBT.readStringUntil('s');
-      Serial.println(dir);
-      if (dir == "u"){
-        move_forward(128);
-      }
-      if (dir == "d"){
-        move_backward(128);
-      }
-      if (dir == "r"){
-        turn_right(1000);
-      }
-      if (dir == "l"){
-        turn_left(1000);
-      }
-      if (dir == "x"){
-        motor_reset();
-      }
+  // // if (Serial.available()) {
+  // //   SerialBT.write(Serial.read());
+  // // }
+
+  if (SerialBT.available()) {
+    String dir = SerialBT.readStringUntil('s');
+    Serial.println(dir);
+    if (dir == "u"){
+      move_forward(128);
     }
-      delay(10);
-
-  // float distance{0};
-  // distance = check_distance();
-  // Serial.println(distance);
-  // delay(500)  ;
-  
-  // while (true){
-  //   turn_right(2000);
-  //   turn_left(2000);
-  //   move_forward(128);
-  //   delay(2000);
-  //   move_backward(128);
-  //   delay(2000);
-  // }
+    if (dir == "d"){
+      move_backward(128);
+    }
+    if (dir == "r"){
+      turn_right(1000);
+    }
+    if (dir == "l"){
+      turn_left(1000);
+    }
+    if (dir == "x"){
+      motor_reset();
+    }
+    if (dir == "vu"){
+      set_servo_position(128);
+    }
+    if (dir == "vr"){
+      set_servo_position(255);
+    }
+  }
+  delay(10);  
+  float distance{0};
+  distance = check_distance();
+  Serial.println(distance);
+  delay(10);
+  Serial.println(gpio_get_level(waterPin));
+  delay(10);
 }

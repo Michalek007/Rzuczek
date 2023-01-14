@@ -2,6 +2,10 @@
 #include "motor.h"
 
 
+int angle_to_time(int angle){
+    return angle;
+}
+
 void motor_set(Motor motor, Direction dir, int speed)
 {   
     if(motor == Motor::A)
@@ -11,7 +15,7 @@ void motor_set(Motor motor, Direction dir, int speed)
             gpio_set_level(in1, 1);
             gpio_set_level(in2, 0);
         }
-        else if(dir == Direction::ccw)
+        if(dir == Direction::ccw)
         {
             gpio_set_level(in1, 0);
             gpio_set_level(in2, 1);
@@ -26,7 +30,7 @@ void motor_set(Motor motor, Direction dir, int speed)
             gpio_set_level(in3, 1);
             gpio_set_level(in4, 0);
         }
-        else if(dir == Direction::ccw)
+        if(dir == Direction::ccw)
         {
             gpio_set_level(in3, 0);
             gpio_set_level(in4, 1);
@@ -58,7 +62,7 @@ void turn_left(int angle)
     motor_set(Motor::A, Direction::ccw, 128);
     motor_set(Motor::B, Direction::ccw, 128);
 
-    delay(angle);
+    delay(angle_to_time(angle));
     motor_reset();
 }
 
@@ -69,7 +73,7 @@ void turn_right(int angle)
     motor_set(Motor::B, Direction::cw, 128);
     motor_set(Motor::A, Direction::cw, 128);
 
-    delay(angle);
+    delay(angle_to_time(angle));
     motor_reset();
 }
 

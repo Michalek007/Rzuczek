@@ -4,10 +4,10 @@
 #define enB 2 //channel 2
 #define enApin 2
 #define enBpin 4
-#define in1 GPIO_NUM_32
-#define in2 GPIO_NUM_33
-#define in3 GPIO_NUM_23
-#define in4 GPIO_NUM_18 // change later
+#define in1 GPIO_NUM_27
+#define in2 GPIO_NUM_26
+#define in3 GPIO_NUM_25
+#define in4 GPIO_NUM_23
 
 enum class Motor
 {

@@ -1,11 +1,11 @@
 #include <Arduino.h>
 
 #define enA 2
-#define enB 3
-#define in1 4
-#define in2 5 
-#define in3 6
-#define in4 7
+#define enB 4
+#define in1 GPIO_NUM_13
+#define in2 GPIO_NUM_12
+#define in3 GPIO_NUM_13
+#define in4 GPIO_NUM_27
 
 enum class Motor
 {

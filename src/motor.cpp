@@ -2,10 +2,9 @@
 #include <Arduino.h>
 
 void motor_set(Motor motor, Direction dir, int speed)
-{
+{   
     if(motor == Motor::A)
     {
-        ledcWrite(enA, speed);
         if(dir == Direction::cw)
         {
             gpio_set_level(in1, 1);
@@ -16,10 +15,11 @@ void motor_set(Motor motor, Direction dir, int speed)
             gpio_set_level(in1, 0);
             gpio_set_level(in2, 1);
         }
+        ledcWrite(enA, speed);
+        
     }
     if(motor == Motor::B)
     {
-        ledcWrite(enB, speed);
         if(dir == Direction::cw)
         {
             gpio_set_level(in3, 1);
@@ -30,12 +30,14 @@ void motor_set(Motor motor, Direction dir, int speed)
             gpio_set_level(in3, 0);
             gpio_set_level(in4, 1);
         }
+        ledcWrite(enB, speed);
     }
 
 }
 
 void move_forward(int speed)
 {
+    motor_reset();
     motor_set(Motor::A, Direction::cw, speed);
     motor_set(Motor::B, Direction::ccw, speed);
 }
@@ -43,6 +45,7 @@ void move_forward(int speed)
 
 void move_backward(int speed)
 {
+    motor_reset();
     motor_set(Motor::A, Direction::ccw, speed);
     motor_set(Motor::B, Direction::cw, speed);
 }
@@ -50,29 +53,28 @@ void move_backward(int speed)
 
 void turn_left(int angle)
 {
-    motor_set(Motor::A, Direction::cw, 0);
-    motor_set(Motor::B, Direction::cw, 0);
-
-    delay(100);
-
-    motor_set(Motor::B, Direction::ccw, 10);
+    motor_reset();
+    motor_set(Motor::A, Direction::ccw, 128);
+    motor_set(Motor::B, Direction::ccw, 128);
 
     delay(angle);
-
-    motor_set(Motor::B, Direction::cw, 0);
 }
 
 
 void turn_right(int angle)
 {
-    motor_set(Motor::A, Direction::cw, 0);
-    motor_set(Motor::B, Direction::cw, 0);
-
-    delay(100);
-
-    motor_set(Motor::A, Direction::cw, 10);
+    motor_reset();
+    motor_set(Motor::B, Direction::cw, 128);
+    motor_set(Motor::A, Direction::cw, 128);
 
     delay(angle);
+}
 
-    motor_set(Motor::A, Direction::cw, 0);
+void motor_reset(){
+    ledcWrite(enA, 0);
+    ledcWrite(enB, 0);
+    gpio_set_level(in1, 0);
+    gpio_set_level(in2, 0);
+    gpio_set_level(in3, 0);
+    gpio_set_level(in4, 0);
 }

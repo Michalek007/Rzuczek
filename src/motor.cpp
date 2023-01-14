@@ -1,5 +1,6 @@
-#include "motor.h"
 #include <Arduino.h>
+#include "motor.h"
+
 
 void motor_set(Motor motor, Direction dir, int speed)
 {   
@@ -58,6 +59,7 @@ void turn_left(int angle)
     motor_set(Motor::B, Direction::ccw, 128);
 
     delay(angle);
+    motor_reset();
 }
 
 
@@ -68,6 +70,7 @@ void turn_right(int angle)
     motor_set(Motor::A, Direction::cw, 128);
 
     delay(angle);
+    motor_reset();
 }
 
 void motor_reset(){

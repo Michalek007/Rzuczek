@@ -28,18 +28,48 @@ void setup() {
 
   Serial.begin(921600);
   // Serial.begin(115200);
-  SerialBT.begin("ESP32test"); //Bluetooth device name
+  SerialBT.begin("rzuczek"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
 }
 
 void loop() {
-    if (Serial.available()) {
-      SerialBT.write(Serial.read());
-    }
+    // if (Serial.available()) {
+    //   SerialBT.write(Serial.read());
+    // }
     if (SerialBT.available()) {
-      Serial.write(SerialBT.read());
+      String dir = SerialBT.readStringUntil('s');
+      Serial.println(dir);
+      // Serial.println(SerialBT.readString());
+      // switch (dir[0]){
+      //   case 'u':
+      //     move_forward(128);
+      //   case 'd':
+      //     move_backward(128);
+      //   case 'l':
+      //     turn_left(2000);
+      //   case 'r':
+      //     turn_right(2000);
+      //   case 'x':
+      //     motor_reset();
+      // }
+      if (dir == "u"){
+        move_forward(128);
+      }
+      if (dir == "d"){
+        move_backward(128);
+      }
+      if (dir == "r"){
+        turn_right(2000);
+      }
+      if (dir == "l"){
+        turn_left(2000);
+      }
+      if (dir == "x"){
+        motor_reset();
+      }
+      // Serial.write(SerialBT.read());
     }
-      delay(20);
+      delay(10);
 
   // float distance{0};
   // distance = check_distance();

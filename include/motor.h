@@ -7,7 +7,7 @@
 #define in1 GPIO_NUM_32
 #define in2 GPIO_NUM_33
 #define in3 GPIO_NUM_23
-#define in4 GPIO_NUM_18
+#define in4 GPIO_NUM_18 // change later
 
 enum class Motor
 {

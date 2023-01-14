@@ -7,18 +7,8 @@ void setup() {
 }
 
 void loop() {
-    ledcWrite(1, 0);
-    delay(100);
-    ledcWrite(1, 200);
-    delay(100);
-    ledcWrite(1, 400);
-    delay(100);
-    ledcWrite(1, 600);
-    delay(100);
-    ledcWrite(1, 800);
-    delay(100);
-    // for (int i = 0; i < 8000; i = i + 100){
-    //     ledcWrite(1, i); //sweep servo 
-    //     delay(50);
-    // }
+    for (int i = 0; i < 8000; i = i + 100){
+        ledcWrite(1, i); //sweep servo 
+        delay(50);
+    }
 }

@@ -119,3 +119,8 @@ def parameters():
     db.session.commit()
 
     return jsonify(message='Parameters added successfully'), 200
+
+
+@app.route('/robot/', methods=['GET'])
+def robot():
+    return render_template('robot.html')

@@ -14,6 +14,7 @@ psutil = "*"
 flask-apscheduler = "*"
 gevent = "*"
 pywin32 = "*"
+pyserial = "*"
 
 [dev-packages]
 

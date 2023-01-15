@@ -15,8 +15,8 @@ enum class Motor
 
 enum class Direction
 {
-    cw = 2,
-    ccw = 3
+    cw = 0,
+    ccw = 1
 };
 
 int angle_to_time(int angle);

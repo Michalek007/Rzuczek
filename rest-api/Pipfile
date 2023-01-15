@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pytest = "*"
+flask = "*"
+flask-bcrypt = "*"
+flask-jwt-extended = "*"
+flask-sqlalchemy = "*"
+flask-marshmallow = "*"
+psutil = "*"
+flask-apscheduler = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

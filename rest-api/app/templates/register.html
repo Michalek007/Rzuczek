@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Rest API template </title>
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+    <form action = "{{url_for('register')}}"  method = "POST">
+        <p>Enter username:</p>
+        <label for='login'></label><input type='text' name='login' id='login' placeholder='login'/>
+        <p>Enter password:</p>
+        <label for='password'></label><input type='password' name='password' id='password' placeholder='password'/>
+        <p><input type='submit' name='submit'/></p>
+    </form>
+ {% block body %}{% endblock %}
+
+</body>
+</html>

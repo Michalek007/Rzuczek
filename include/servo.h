@@ -4,4 +4,4 @@
 #define servoPin 16 // change later
 
 
-void set_servo_position_up(int degree, int last_degree);
+void set_servo_position(int degree, int last_degree);

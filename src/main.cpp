@@ -6,9 +6,9 @@
 #include "BluetoothSerial.h"
 
 
-// #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-// #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
-// #endif
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
 
 #include <Adafruit_Sensor.h>
 
@@ -26,7 +26,7 @@ Adafruit_BMP280 bmp; // I2C
 
 int last_degree{0};
 bool auto_enable{false};
-
+int pump_pin_value{1};
 
 void setup() {
   ledcSetup(enAB, 500, 8); // channel 1, 500 Hz, 8-bit width
@@ -97,13 +97,6 @@ void loop() {
 
   delay(50);
 
-  // float temp = bmp.readTemperature();
-  // float press = bmp.readPressure();
-  // float absl = bmp.readAltitude();
-  // Serial.println(temp);
-  // if (Serial.available()) {
-    // SerialBT.write(Serial.read());
-  // }
   if (SerialBT.available()) {
     String dir = SerialBT.readStringUntil('s');
     Serial.println(dir);
@@ -129,43 +122,36 @@ void loop() {
     }
     if (dir == "vu"){
       // servo position down
-      set_servo_position_up(240, last_degree);
+      set_servo_position(240, last_degree);
       last_degree = 240;
       if (!gpio_get_level(waterPin)){
           gpio_set_level(pumpPin, 0);
           delay(1000);
           gpio_set_level(pumpPin, 1);
+          pump_pin_value = 1;
       }
     }
     if (dir == "vd"){
       // servo position up
-      set_servo_position_up(70, 0);
+      set_servo_position(70, 0);
       last_degree = 70;
     }
     if (dir == "p"){
       // pump enable/disable
-      if (gpio_get_level(pumpPin) == 1){
+      if (pump_pin_value == 1){
         gpio_set_level(pumpPin, 0);
+        pump_pin_value = 0;
       }
       else{
         gpio_set_level(pumpPin, 1);
+        pump_pin_value = 1;
       }
     }
     if (dir == "a"){
       // autonomous driving enable/disable
-      auto_enable != auto_enable;
+      auto_enable = !auto_enable;
     }
   }
-  // if (auto_enable){
-  //   set_servo_position_up()
-  //   turn_left(333);
-  //   move_forward(128);
-  //   delay(2000);
-  //   turn_right(333);
-  //   move_backward(128);
-  //   delay(2000);
-  //   motor_reset();
-  // }
   if (auto_enable == true){
     if (check_distance() <= 20){
       motor_reset();

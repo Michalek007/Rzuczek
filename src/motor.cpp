@@ -20,8 +20,6 @@ void motor_set(Motor motor, Direction dir, int speed)
             gpio_set_level(in1, 0);
             gpio_set_level(in2, 1);
         }
-        ledcWrite(enA, speed);
-        
     }
     if(motor == Motor::B)
     {
@@ -35,9 +33,9 @@ void motor_set(Motor motor, Direction dir, int speed)
             gpio_set_level(in3, 0);
             gpio_set_level(in4, 1);
         }
-        ledcWrite(enB, speed);
     }
-
+    ledcWrite(enAB, speed);
+    
 }
 
 void move_forward(int speed)
@@ -78,8 +76,7 @@ void turn_right(int angle)
 }
 
 void motor_reset(){
-    ledcWrite(enA, 0);
-    ledcWrite(enB, 0);
+    ledcWrite(enAB, 0);
     gpio_set_level(in1, 0);
     gpio_set_level(in2, 0);
     gpio_set_level(in3, 0);

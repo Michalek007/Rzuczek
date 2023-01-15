@@ -19,7 +19,9 @@
 #include "hcsr04.h"
 #include "servo.h"
 
-#define waterPin GPIO_NUM_5
+#define waterPin GPIO_NUM_34
+#define pumpPin GPIO_NUM_5
+#define limitPin GPIO_NUM_35
 
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
@@ -29,11 +31,8 @@ Adafruit_SSD1306 display(-1);
 sensors_event_t event; 
 
 void setup() {
-  ledcSetup(enA, 500, 8); // channel 1, 500 Hz, 8-bit width
-  ledcAttachPin(enApin, enA); //GPIO 2 assigned to channel 1
-  
-  ledcSetup(enB, 500, 8); // channel 2, 500 Hz, 8-bit width
-  ledcAttachPin(enBpin, enB); //GPIO 4 assigned to channel 2
+  ledcSetup(enAB, 500, 8); // channel 1, 500 Hz, 8-bit width
+  ledcAttachPin(enABpin, enAB); //GPIO 2 assigned to channel 1
 
   ledcSetup(servoChannel, 500, 8); // channel 3, 500 Hz, 8-bit width
   ledcAttachPin(servoPin, servoChannel); //GPIO 5 assigned to channel 3
@@ -47,6 +46,8 @@ void setup() {
   gpio_set_direction(echo_pin, GPIO_MODE_INPUT);
 
   gpio_set_direction(waterPin, GPIO_MODE_INPUT);
+  gpio_set_direction(pumpPin, GPIO_MODE_OUTPUT);
+  gpio_set_direction(limitPin, GPIO_MODE_INPUT);
 
   Serial.begin(921600);
   SerialBT.begin("rzuczek"); //Bluetooth device name
@@ -148,6 +149,8 @@ void loop() {
       set_servo_position(255);
     }
   }
+  delay(10);
+  Serial.println(gpio_get_level(limitPin));
   delay(10);  
   float distance{0};
   distance = check_distance();

@@ -1,12 +1,17 @@
 #include "servo.h"
 
 
-void set_servo_position(int degree){
-    for (int i = 0; i < degree;i+=5){
+void set_servo_position_up(int degree, int last_degree){
+    for (int i = last_degree; i < degree;i+=5){
         ledcWrite(servoChannel, i);
+        
     }
 }
 
-void reset_servo_position(){
-    ledcWrite(servoChannel, 0);
+void set_servo_position_down(int degree, int last_degree){ //10 //240
+    for (int i = last_degree; i > degree; i -= 5)
+    {
+        ledcWrite(servoChannel, i);
+        delay(50);
+    }
 }

@@ -57,6 +57,8 @@ void setup() {
   gpio_set_direction(pumpPin, GPIO_MODE_OUTPUT);
   gpio_set_direction(limitPin, GPIO_MODE_INPUT);
 
+  gpio_set_level(pumpPin, 0);
+
   Serial.begin(921600);
   SerialBT.begin("rzuczek"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
@@ -100,6 +102,7 @@ void setup() {
 }
 
 void loop() {
+  int last_degree{0};
 
   Serial.print(F("Temperature = "));
   Serial.print(bmp.readTemperature());
@@ -141,10 +144,12 @@ void loop() {
       motor_reset();
     }
     if (dir == "vu"){
-      set_servo_position(128);
+      set_servo_position_up(240, last_degree);
+      last_degree = 240;
     }
-    if (dir == "vr"){
-      set_servo_position(255);
+    if (dir == "vd"){
+      set_servo_position_up(70, 0);
+      last_degree = 70;
     }
   }
   // delay(10);

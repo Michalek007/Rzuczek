@@ -5,4 +5,3 @@
 
 
 void set_servo_position_up(int degree, int last_degree);
-void set_servo_position_down(int degree, int last_degree);

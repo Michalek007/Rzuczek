@@ -12,6 +12,8 @@ flask-sqlalchemy = "*"
 flask-marshmallow = "*"
 psutil = "*"
 flask-apscheduler = "*"
+gevent = "*"
+pywin32 = "*"
 
 [dev-packages]
 

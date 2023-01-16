@@ -1,5 +1,6 @@
 # Rzuczek - BITEhack 2023
 
+![BITEhack picture](images/image2.jpg)
 
 ## Electronics schematic
 ![Schematic](kicad/schematic-image-1.png)

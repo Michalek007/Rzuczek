@@ -2,7 +2,7 @@
 
 
 ## Electronics schematic
-[Schematic](kicad/schematic-image-1.png)
+![Schematic](kicad/schematic-image-1.png)
 
 ## Authors
 Marek Pawłowski, Michał Nizioł, Dominik Michalczyk, Krzysztof Sikora

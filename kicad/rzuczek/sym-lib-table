@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name "New_Library")(type "KiCad")(uri "${KIPRJMOD}/New_Library.kicad_sym")(options "")(descr ""))
+  (lib (name "module_symbols")(type "KiCad")(uri "${KIPRJMOD}/symbols_footprints/l298n_lib.kicad_sym")(options "")(descr ""))
+  (lib (name "ESP32-DEVKIT-V1")(type "KiCad")(uri "${KIPRJMOD}/symbols_footprints/ESP32-DEVKIT-V1.kicad_sym")(options "")(descr ""))
+)

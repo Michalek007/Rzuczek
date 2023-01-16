@@ -6,9 +6,9 @@
 #include "BluetoothSerial.h"
 
 
-// #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-// #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
-// #endif
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
 
 #include <Adafruit_Sensor.h>
 
@@ -24,19 +24,9 @@
 BluetoothSerial SerialBT;
 Adafruit_BMP280 bmp; // I2C
 
-
-// WiFi defines
-// #include <WiFi.h>
-// #include <HTTPClient.h>
-
-// const char* ssid = "DESKTOP-O2OLJ1H 8056";
-// const char* password = "L5w7393^";
-
-// String serverName = "http://192.168.137.1:5000";
-
-// unsigned long lastTime = 0;
-// unsigned long timerDelay = 5000;
-
+int last_degree{0};
+bool auto_enable{false};
+int pump_pin_value{1};
 
 void setup() {
   ledcSetup(enAB, 500, 8); // channel 1, 500 Hz, 8-bit width
@@ -45,17 +35,21 @@ void setup() {
   ledcSetup(servoChannel, 500, 8); // channel 3, 500 Hz, 8-bit width
   ledcAttachPin(servoPin, servoChannel); //GPIO 5 assigned to channel 3
 
+  // pins for motors
   gpio_set_direction(in1, GPIO_MODE_OUTPUT);
   gpio_set_direction(in2, GPIO_MODE_OUTPUT);
   gpio_set_direction(in3, GPIO_MODE_OUTPUT);
   gpio_set_direction(in4, GPIO_MODE_OUTPUT);
 
+ // pins for sensor
   gpio_set_direction(trigger_pin, GPIO_MODE_OUTPUT);
   gpio_set_direction(echo_pin, GPIO_MODE_INPUT);
 
   gpio_set_direction(waterPin, GPIO_MODE_INPUT);
   gpio_set_direction(pumpPin, GPIO_MODE_OUTPUT);
   gpio_set_direction(limitPin, GPIO_MODE_INPUT);
+
+  gpio_set_level(pumpPin, 1);
 
   Serial.begin(921600);
   SerialBT.begin("rzuczek"); //Bluetooth device name
@@ -85,18 +79,6 @@ void setup() {
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
                   
 
-  // WiFi setup
-  // WiFi.begin(ssid, password);
-  // Serial.println("Connecting");
-  // while(WiFi.status() != WL_CONNECTED) {
-  //   delay(500);
-  //   Serial.print(".");
-  // }
-  // Serial.println("");
-  // Serial.print("Connected to WiFi network with IP Address: ");
-  // Serial.println(WiFi.localIP());
- 
-  // Serial.println("Timer set to 5 seconds (timerDelay variable), it will take 5 seconds before publishing the first reading.");
 }
 
 void loop() {
@@ -115,87 +97,69 @@ void loop() {
 
   delay(50);
 
-  // float temp = bmp.readTemperature();
-  // float press = bmp.readPressure();
-  // float absl = bmp.readAltitude();
-  // Serial.println(temp);
-  // if (Serial.available()) {
-    // SerialBT.write(Serial.read());
-  // }
   if (SerialBT.available()) {
     String dir = SerialBT.readStringUntil('s');
     Serial.println(dir);
     if (dir == "u"){
+      // goes forward untill stop
       move_forward(128);
     }
     if (dir == "d"){
+      // goes backward untill stop
       move_backward(128);
     }
     if (dir == "r"){
-      turn_right(1000);
+      // turns right 30 degrees  
+      turn_right(333);
     }
     if (dir == "l"){
-      turn_left(1000);
+      // turns left 30 degrees
+      turn_left(333);
     }
     if (dir == "x"){
+      // stops motor
       motor_reset();
     }
     if (dir == "vu"){
-      set_servo_position(128);
+      // servo position down
+      set_servo_position(240, last_degree);
+      last_degree = 240;
+      if (!gpio_get_level(waterPin)){
+          gpio_set_level(pumpPin, 0);
+          delay(1000);
+          gpio_set_level(pumpPin, 1);
+          pump_pin_value = 1;
+      }
     }
-    if (dir == "vr"){
-      set_servo_position(255);
+    if (dir == "vd"){
+      // servo position up
+      set_servo_position(70, 0);
+      last_degree = 70;
+    }
+    if (dir == "p"){
+      // pump enable/disable
+      if (pump_pin_value == 1){
+        gpio_set_level(pumpPin, 0);
+        pump_pin_value = 0;
+      }
+      else{
+        gpio_set_level(pumpPin, 1);
+        pump_pin_value = 1;
+      }
+    }
+    if (dir == "a"){
+      // autonomous driving enable/disable
+      auto_enable = !auto_enable;
     }
   }
-  // delay(10);
-  // Serial.println(gpio_get_level(limitPin));
-  // delay(10);  
-  // float distance{0};
-  // distance = check_distance();
-  // Serial.println(distance);
-  delay(10);
-  Serial.println(gpio_get_level(waterPin));
-  delay(10);
-
-  // WiFi code
-  // // Send an HTTP POST request every 10 minutes
-  // if ((millis() - lastTime) > timerDelay) {
-  //   //Check WiFi connection status
-  //   if(WiFi.status()== WL_CONNECTED){
-  //     HTTPClient http;
-
-  //     float temp = bmp.readTemperature();
-  //     float press = bmp.readPressure();
-  //     float absl = bmp.readAltitude();
-
-  //     String values = "?temp=" + String(temp) + "&press=" + String(press) + "&absl=" + String(absl);
-  //     String serverPath = serverName + "/parameters/" + values;
-      
-  //     // Your Domain name with URL path or IP address with path
-  //     http.begin(serverPath.c_str());
-      
-  //     // If you need Node-RED/server authentication, insert user and password below
-  //     //http.setAuthorization("REPLACE_WITH_SERVER_USERNAME", "REPLACE_WITH_SERVER_PASSWORD");
-      
-  //     // Send HTTP GET request
-  //     int httpResponseCode = http.GET();
-      
-  //     if (httpResponseCode>0) {
-  //       Serial.print("HTTP Response code: ");
-  //       Serial.println(httpResponseCode);
-  //       String payload = http.getString();
-  //       Serial.println(payload);
-  //     }
-  //     else {
-  //       Serial.print("Error code: ");
-  //       Serial.println(httpResponseCode);
-  //     }
-  //     // Free resources
-  //     http.end();
-  //   }
-  //   else {
-  //     Serial.println("WiFi Disconnected");
-  //   }
-  //   lastTime = millis();
-  // }
+  if (auto_enable == true){
+    if (check_distance() <= 20){
+      motor_reset();
+      turn_left(333);
+      move_forward(128);
+   }
+   else{
+      move_forward(128);
+   }
+  }
 }

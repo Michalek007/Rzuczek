@@ -1,6 +1,6 @@
 # Rzuczek - BITEhack 2023
 
-**Robot build and programmed in 24 hours at Hackatin BITEhack 2023**
+**Robot built and programmed in 24 hours at Hackaton BITEhack 2023**
 
 This repository contains:
 * electronic schematics
@@ -23,7 +23,7 @@ Project structure:
 
 ## Electronics schematic
 ![Schematic](kicad/schematic-image-1.png)
-
+![image](https://user-images.githubusercontent.com/101892382/213329418-c789b3f6-ed88-4c2a-9d72-60767d841ad7.png)
 ![BITEhack picture](images/image2.jpg)
 ## Authors
 Marek Pawłowski, Michał Nizioł, Dominik Michalczyk, Krzysztof Sikora

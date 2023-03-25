@@ -31,7 +31,7 @@ def register():
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('base.html')
+        return render_template('login.html')
 
     if request.is_json:
         username = request.json['login']

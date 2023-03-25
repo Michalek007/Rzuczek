@@ -1,15 +1,122 @@
 body {
-    margin: 25px;
+    margin: 50px;
     text-align: center;
+    background: #3E3636;
 }
 
-h1 {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 3vw;
-    font-family: D-Din,Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
-    font-weight: bold;
-    color: #800002;
+p{
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
 
+    color: #FFFFFF;
+}
+
+.left{
+    text-align: left;
+}
+
+.text{
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+}
+
+.black_text{
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+}
+
+.white_text{
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+
+    color: #FFFFFF;
+}
+
+input{
+    box-sizing: border-box;
+
+    width: 316px;
+    height: 72px;
+
+    background: #302B2B;
+    border: 1px solid #000000;
+}
+
+.box{
+    box-sizing: border-box;
+
+    width: 316px;
+    height: 72px;
+
+    background: #302B2B;
+}
+
+button{
+    box-sizing: border-box;
+
+    width: 316px;
+    height: 72px;
+
+    background: #302B2B;
+    border: 1px solid #000000;
+
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+
+    color: #FFFFFF;
+}
+
+textarea{
+    box-sizing: border-box;
+
+    width: 316px;
+    height: 72px;
+
+    background: #302B2B;
+    border: 1px solid #000000;
+
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+
+    color: #FFFFFF;
+}
+
+/* The navbar container */
+.topnav {
+  overflow: hidden;
+  background-color: #302B2B;
+}
+
+/* Navbar links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Links - change color on hover */
+.topnav a:hover {
+  background-color: #BBAEAE ;
+  color: black;
 }

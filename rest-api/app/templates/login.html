@@ -12,12 +12,15 @@
 
 {% block body %}
 <body>
-    <form action = "{{url_for('register')}}"  method = "POST">
+    <form action = "{{url_for('login')}}"  method = "POST">
         <p>Enter username:</p>
         <label for='login'></label><input class="white_text" type='text' name='login' id='login' placeholder='login'/>
         <p>Enter password:</p>
         <label for='password'></label><input class="white_text" type='password' name='password' id='password' placeholder='password'/>
         <p><input class="white_text" type='submit' name='submit'/></p>
+    </form>
+     <form action = "{{url_for('register')}}"  method = "GET">
+        <p><input class="white_text" type = "submit" value = "Click to register" /></p>
     </form>
 </body>
 {% endblock %}

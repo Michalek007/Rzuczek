@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="UTF-8">
-    <title> Rest API template </title>
+    <title> RZUCZEK </title>
     <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
-  {% block head %}{% endblock %}
+    {% endblock %}
 </head>
 <body>
-    <form action = "{{url_for('login')}}"  method = "POST">
-        <p>Enter username:</p>
-        <label for='login'></label><input type='text' name='login' id='login' placeholder='login'/>
-        <p>Enter password:</p>
-        <label for='password'></label><input type='password' name='password' id='password' placeholder='password'/>
-        <p><input type='submit' name='submit'/></p>
-    </form>
-     <form action = "{{url_for('register')}}"  method = "GET">
-        <p><input type = "submit" value = "Click to register" /></p>
-    </form>
+
+{% block menu %}
+
+    <div class="topnav">
+        <a href="{{url_for('register')}}"> REGISTER </a>
+        <a href="{{url_for('login')}}"> LOGIN </a>
+        <a href="{{url_for('robot')}}"> ROBOT </a>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+{%  endblock %}
 </body>
 </html>
